@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextDatabase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="texts.xsd" Version="4.23.2">
+  <Languages>
+    <Language Id="GB" />
+  </Languages>
+  <Texts>
+    <TextGroup Id="Group1" />
+    <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_98HO" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB"></Translation>
+      </Text>
+      <Text Id="__SingleUse_6T0N" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">result:&lt;value&gt;</Translation>
+      </Text>
+      <Text Id="__SingleUse_C2JL" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">Recognize</Translation>
+      </Text>
+      <Text Id="__SingleUse_BRR5" Alignment="Left" TypographyId="Default">
+        <Translation Language="GB">Write Here</Translation>
+      </Text>
+      <Text Id="__SingleUse_WL1Q" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">Apollo HandWrite Demo</Translation>
+      </Text>
+    </TextGroup>
+  </Texts>
+  <Typographies>
+    <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+  </Typographies>
+</TextDatabase>

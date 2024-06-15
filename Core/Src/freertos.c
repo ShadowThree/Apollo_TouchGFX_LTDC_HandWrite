@@ -47,7 +47,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+volatile uint8_t recognize_finish = 0;
 /* USER CODE END Variables */
 /* Definitions for defaultTask */
 osThreadId_t defaultTaskHandle;
@@ -161,7 +161,13 @@ __weak void StartDefaultTask(void *argument)
   {
     osSemaphoreAcquire(binSemRecognizeHandle, osWaitForever);
 		//LOG_DBG("recognize...\n");
-		alientek_ncr(draw_coor, point_num, CHAR_NUM, RECOGNIZE_Aa1, result);
+//		for(uint16_t i = 0; i < point_num; i+=2) {
+//			LOG_DBG("P(%d,%d) P(%d,%d)\n", draw_coor[i].x, draw_coor[i].y, draw_coor[i+1].x, draw_coor[i+1].y);
+//			osDelay(2);
+//		}
+		alientek_ncr(draw_coor, point_num, CHAR_NUM/2, RECOGNIZE_123, result);
+		alientek_ncr(draw_coor, point_num, CHAR_NUM/2, RECOGNIZE_ABC, &result[3]);
+		recognize_finish = 1;
 		LOG_DBG("point_num[%d] result: %s\n", point_num, result);
   }
   /* USER CODE END StartDefaultTask */

@@ -42,7 +42,7 @@ typedef struct __attribute__((packed)) _atk_ncr_point		// ARM_compiler_v6
 #define RECOGNIZE_abc		3
 #define RECOGNIZE_Aa1		4
 // output number
-#define CHAR_NUM	5
+#define CHAR_NUM	6
 // max point to record
 #define MAX_POINT		500
 extern atk_ncr_point draw_coor[MAX_POINT];
@@ -56,7 +56,8 @@ extern char result[CHAR_NUM+1];
 //       1,初始化失败
 unsigned char alientek_ncr_init(void);
 //停止识别器
-void alientek_ncr_stop(void);	  
+void alientek_ncr_stop(void);
+
 //识别器识别
 //track:输入点阵集合 
 //potnum:输入点阵的点数,就是track的大小
@@ -67,7 +68,9 @@ void alientek_ncr_stop(void);
 //3,仅识别小写字母
 //4,混合识别(全部识别)
 //result:结果缓存区(至少为:charnum+1个字节)	
+/** @note: the track will be changed! */
 void alientek_ncr(atk_ncr_point * track,int potnum,int charnum,unsigned char mode,char*result);
+
 //内存设置函数 
 void alientek_ncr_memset(char *p,char c,unsigned long len);	
 //动态申请内存,当使用ATKNCR_M_Vx.x.lib时,必须实现.

@@ -227,7 +227,7 @@ void DMA2D_IRQHandler(void)
 #else
 	#define INT_DBG(fmt, ...)
 #endif
-#define LINE_WIDTH	2
+#define LINE_WIDTH	0
 
 #include "stdlib.h"
 void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2)

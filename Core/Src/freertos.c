@@ -27,6 +27,7 @@
 /* USER CODE BEGIN Includes */
 #include "gt911.h"
 #include "dbger.h"
+#include "atk_ncr.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -62,6 +63,11 @@ const osThreadAttr_t TouchGFX_attributes = {
   .stack_size = 2048 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for binSemRecognize */
+osSemaphoreId_t binSemRecognizeHandle;
+const osSemaphoreAttr_t binSemRecognize_attributes = {
+  .name = "binSemRecognize"
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -86,6 +92,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_MUTEX */
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
+
+  /* Create the semaphores(s) */
+  /* creation of binSemRecognize */
+  binSemRecognizeHandle = osSemaphoreNew(1, 0, &binSemRecognize_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -141,10 +151,18 @@ __weak void StartDefaultTask(void *argument)
 //	extern void LTDC_draw_line_test(void);
 //	LTDC_draw_line_test();
 	
+	// hand write lib init
+	if(alientek_ncr_init()) {
+		LOG_ERR("Hand Write Lib Init ERR\n");
+	}
+	
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    osSemaphoreAcquire(binSemRecognizeHandle, osWaitForever);
+		//LOG_DBG("recognize...\n");
+		alientek_ncr(draw_coor, point_num, CHAR_NUM, RECOGNIZE_Aa1, result);
+		LOG_DBG("point_num[%d] result: %s\n", point_num, result);
   }
   /* USER CODE END StartDefaultTask */
 }

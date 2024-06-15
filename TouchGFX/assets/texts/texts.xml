@@ -6,14 +6,11 @@
   <Texts>
     <TextGroup Id="Group1" />
     <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_PX9I" Alignment="Left" TypographyId="Large">
+        <Translation Language="GB">result:&lt;value&gt;</Translation>
+      </Text>
       <Text Id="__SingleUse_A4EZ" Alignment="Center" TypographyId="Default">
         <Translation Language="GB">Clear</Translation>
-      </Text>
-      <Text Id="__SingleUse_98HO" Alignment="Left" TypographyId="Large">
-        <Translation Language="GB"></Translation>
-      </Text>
-      <Text Id="__SingleUse_6T0N" Alignment="Left" TypographyId="Large">
-        <Translation Language="GB">result:&lt;value&gt;</Translation>
       </Text>
       <Text Id="__SingleUse_C2JL" Alignment="Center" TypographyId="Default">
         <Translation Language="GB">Recognize</Translation>
@@ -28,7 +25,7 @@
   </Texts>
   <Typographies>
     <Typography Id="Default" Font="verdana.ttf" Size="20" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
-    <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
+    <Typography Id="Large" Font="verdana.ttf" Size="40" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" WildcardCharacterRanges="0-9,A-Z,a-z" />
     <Typography Id="Small" Font="verdana.ttf" Size="10" Bpp="4" IsVector="no" Direction="LTR" FallbackCharacter="?" />
   </Typographies>
 </TextDatabase>

@@ -219,7 +219,8 @@ void DMA2D_IRQHandler(void)
 
 /* USER CODE BEGIN 1 */
 #include "gt911.h"
-#define INT_LOG_EN	1
+#include "atk_ncr.h"
+#define INT_LOG_EN	0
 #if INT_LOG_EN
 	#include "dbger.h"
 	#define INT_DBG(fmt, ...)		LOG_DBG(fmt, ##__VA_ARGS__)
@@ -242,6 +243,10 @@ void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2)
 			if(y1 < y2) {		// abs(x1-x2) > abs(y1-y2)		// x1 < x2		// y1 < y2
 				for(int16_t i = x1; i <= x2; i++) {
 					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = i;
+						draw_coor[point_num++].y = y1+val*(i-x1)/100;
+					}
 					for(int8_t j = -LINE_WIDTH; j <= LINE_WIDTH; j++) {
 						addr = (LTDC_L1_ADDR + (i - LTDC_L1_START_X) * 2 + (( y1+val*(i-x1)/100+j ) - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
 						INT_DBG("\tp(%d,%d) addr:0x%08x\n", i, y1+val*(i-x1)/100+j, addr);
@@ -251,6 +256,10 @@ void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2)
 			} else {		// abs(x1-x2) > abs(y1-y2)		// x1 < x2		// y1 >= y2
 				for(int16_t i = x1; i <= x2; i++) {
 					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = i;
+						draw_coor[point_num++].y = y1-val*(i-x1)/100;
+					}
 					for(int8_t j = -LINE_WIDTH; j <= LINE_WIDTH; j++) {
 						addr = (LTDC_L1_ADDR + (i - LTDC_L1_START_X) * 2 + (( y1-val*(i-x1)/100+j ) - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
 						INT_DBG("\tp(%d,%d) addr:0x%08x\n", i, y1-val*(i-x1)/100+j, addr);
@@ -262,6 +271,10 @@ void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2)
 			if(y1 < y2) {		// abs(x1-x2) > abs(y1-y2)		// x1 >= x2		// y1 < y2
 				for(int16_t i = x1; i >= x2; i--) {
 					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = i;
+						draw_coor[point_num++].y = y1+val*(x1-i)/100;
+					}
 					for(int8_t j = -LINE_WIDTH; j <= LINE_WIDTH; j++) {
 						addr = (LTDC_L1_ADDR + (i - LTDC_L1_START_X) * 2 + (( y1+val*(x1-i)/100+j ) - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
 						INT_DBG("\tp(%d,%d) addr:0x%08x\n", i, y1+val*(x1-i)/100+j, addr);
@@ -271,6 +284,10 @@ void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2)
 			} else {		// abs(x1-x2) > abs(y1-y2)		// x1 >= x2		// y1 >= y2
 				for(int16_t i = x1; i >= x2; i--) {
 					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = i;
+						draw_coor[point_num++].y = y1-val*(x1-i)/100;
+					}
 					for(int8_t j = -LINE_WIDTH; j <= LINE_WIDTH; j++) {
 						addr = (LTDC_L1_ADDR + (i - LTDC_L1_START_X) * 2 + (( y1-val*(x1-i)/100+j ) - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
 						INT_DBG("\tp(%d,%d) addr:0x%08x\n", i, y1-val*(x1-i)/100+j, addr);
@@ -285,6 +302,10 @@ void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2)
 			if(y1 < y2) {		// abs(x1-x2) <= abs(y1-y2)		// x1 < x2		// y1 < y2
 				for(int16_t i = y1; i <= y2; i++) {
 					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = x1+val*(i-y1)/100;
+						draw_coor[point_num++].y = i;
+					}
 					for(int8_t j = -LINE_WIDTH; j <= LINE_WIDTH; j++) {
 						addr = (LTDC_L1_ADDR + (( x1+val*(i-y1)/100+j ) - LTDC_L1_START_X) * 2 + (i - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
 						INT_DBG("\tp(%d,%d) addr:0x%08x\n", x1+val*(i-y1)/100+j, i, addr);
@@ -294,6 +315,10 @@ void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2)
 			} else {		// abs(x1-x2) <= abs(y1-y2)		// x1 < x2		// y1 >= y2
 				for(int16_t i = y1; i >= y2; i--) {
 					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = x1+val*(y1-i)/100;
+						draw_coor[point_num++].y = i;
+					}
 					for(int8_t j = -LINE_WIDTH; j <= LINE_WIDTH; j++) {
 						addr = (LTDC_L1_ADDR + (( x1+val*(y1-i)/100+j ) - LTDC_L1_START_X) * 2 + (i - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
 						INT_DBG("\tp(%d,%d) addr:0x%08x\n", x1+val*(y1-i)/100+j, i, addr);
@@ -305,6 +330,10 @@ void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2)
 			if(y1 < y2) {		// abs(x1-x2) <= abs(y1-y2)		// x1 >= x2		// y1 < y2
 				for(int16_t i = y1; i <= y2; i++) {
 					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = x1-val*(i-y1)/100;
+						draw_coor[point_num++].y = i;
+					}
 					for(int8_t j = -LINE_WIDTH; j <= LINE_WIDTH; j++) {
 						addr = (LTDC_L1_ADDR + (( x1-val*(i-y1)/100+j ) - LTDC_L1_START_X) * 2 + (i - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
 						INT_DBG("\tp(%d,%d) addr:0x%08x\n", x1-val*(i-y1)/100+j, i, addr);
@@ -314,6 +343,10 @@ void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2)
 			} else {		// abs(x1-x2) <= abs(y1-y2)		// x1 >= x2		// y1 >= y2
 				for(int16_t i = y1; i >= y2; i--) {
 					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = x1-val*(y1-i)/100;
+						draw_coor[point_num++].y = i;
+					}
 					for(int8_t j = -LINE_WIDTH; j <= LINE_WIDTH; j++) {
 						addr = (LTDC_L1_ADDR + (( x1-val*(y1-i)/100+j ) - LTDC_L1_START_X) * 2 + (i - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
 						INT_DBG("\tp(%d,%d) addr:0x%08x\n", x1-val*(y1-i)/100+j, i, addr);
@@ -378,7 +411,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		for(uint8_t i = 0; i < num_touched; i++) {
 			//INT_DBG("\tP%d(%d, %d)\n", i, touch_coordinate[i].x, touch_coordinate[i].y);
 			
-			// process the handwrite event
+			#if 1		// process the handwrite event
 			if(touch_coordinate[i].x > LTDC_L1_START_X + LINE_WIDTH && touch_coordinate[i].x < LTDC_L1_START_X + LTDC_L1_WIDTH - LINE_WIDTH &&
 				 touch_coordinate[i].y > LTDC_L1_START_Y + LINE_WIDTH && touch_coordinate[i].y < LTDC_L1_START_Y + LTDC_L1_HEIGHT - LINE_WIDTH &&
 				 last_pos[i].x > LTDC_L1_START_X + LINE_WIDTH && last_pos[i].x < LTDC_L1_START_X + LTDC_L1_WIDTH - LINE_WIDTH &&
@@ -410,7 +443,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 			}
 			last_pos[i].x = touch_coordinate[i].x;
 			last_pos[i].y = touch_coordinate[i].y;
-			
+			#endif
 		}
 	}
 }

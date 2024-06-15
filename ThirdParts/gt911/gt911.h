@@ -71,7 +71,7 @@ extern "C" {
 //#define GT911_DELAY(ms)			HAL_Delay(ms)		// delay in ms
 #define GT911_DELAY(ms)			osDelay(ms)
 
-#define NUM_TOUCH_SUPPORT		(2)		// range [1, 5]
+#define NUM_TOUCH_SUPPORT		(1)		// range [1, 5]
 
 typedef enum {
 	GT911_STA_OK = 0,

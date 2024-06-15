@@ -26,6 +26,8 @@ public:
     virtual void deactivate();
 
     virtual ~Screen1Presenter() {}
+		
+		void showResult(char* result);
 
 private:
     Screen1Presenter();

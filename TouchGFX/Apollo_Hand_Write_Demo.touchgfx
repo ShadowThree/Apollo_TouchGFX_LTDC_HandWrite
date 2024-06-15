@@ -39,7 +39,7 @@
           },
           {
             "Type": "ButtonWithLabel",
-            "Name": "buttonWithLabel1",
+            "Name": "btnRecognize",
             "X": 563,
             "Y": 237,
             "Width": 240,
@@ -59,22 +59,6 @@
             },
             "TextRotation": "0",
             "Preset": "alternate_theme\\presets\\button\\regular\\height_50\\medium_rounded_normal.json"
-          },
-          {
-            "Type": "TextArea",
-            "Name": "textArea3",
-            "X": 563,
-            "Y": 324,
-            "Width": 132,
-            "Height": 48,
-            "TextId": "__SingleUse_6T0N",
-            "TextRotation": "0",
-            "AutoSize": true,
-            "Wildcard1": {
-              "TextId": "__SingleUse_98HO",
-              "UseBuffer": true,
-              "BufferSize": 10
-            }
           },
           {
             "Type": "ButtonWithLabel",
@@ -98,6 +82,20 @@
             },
             "TextRotation": "0",
             "Preset": "alternate_theme\\presets\\button\\regular\\height_50\\tiny_round_normal.json"
+          },
+          {
+            "Type": "TextArea",
+            "Name": "txtResult",
+            "X": 563,
+            "Y": 334,
+            "Width": 370,
+            "Height": 48,
+            "TextId": "__SingleUse_PX9I",
+            "TextRotation": "0",
+            "Wildcard1": {
+              "UseBuffer": true,
+              "BufferSize": 20
+            }
           }
         ],
         "Interactions": [
@@ -110,6 +108,17 @@
             "Action": {
               "Type": "ActionCustom",
               "FunctionName": "clearHandWriteArea"
+            }
+          },
+          {
+            "InteractionName": "recognize",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "btnRecognize"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "recognize"
             }
           }
         ]

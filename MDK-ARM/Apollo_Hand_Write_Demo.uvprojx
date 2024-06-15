@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32H743xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../TouchGFX/App;../TouchGFX/target/generated;../TouchGFX/target;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Drivers/STM32H7xx_HAL_Driver/Inc;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Middlewares/Third_Party/FreeRTOS/Source/include;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Drivers/CMSIS/Device/ST/STM32H7xx/Include;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Drivers/CMSIS/Include;../ThirdParts/dbger;../ThirdParts/gpio_i2c;../ThirdParts/gt911;../ThirdParts/sdram;../middlewares/st/touchgfx/framework/include;../touchgfx/generated/fonts/include;../touchgfx/generated/gui_generated/include;../touchgfx/generated/images/include;../touchgfx/generated/texts/include;../touchgfx/generated/videos/include;../touchgfx/gui/include</IncludePath>
+              <IncludePath>../Core/Inc;../TouchGFX/App;../TouchGFX/target/generated;../TouchGFX/target;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Drivers/STM32H7xx_HAL_Driver/Inc;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Drivers/STM32H7xx_HAL_Driver/Inc/Legacy;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Middlewares/Third_Party/FreeRTOS/Source/include;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Drivers/CMSIS/Device/ST/STM32H7xx/Include;C:/Users/Shado/STM32Cube/Repository/STM32Cube_FW_H7_V1.11.2/Drivers/CMSIS/Include;../ThirdParts/dbger;../ThirdParts/gpio_i2c;../ThirdParts/gt911;../ThirdParts/sdram;../ThirdParts/hand_write_lib;../middlewares/st/touchgfx/framework/include;../touchgfx/generated/fonts/include;../touchgfx/generated/gui_generated/include;../touchgfx/generated/images/include;../touchgfx/generated/texts/include;../touchgfx/generated/videos/include;../touchgfx/gui/include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -898,6 +898,16 @@
               <FileName>sdram.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\ThirdParts\sdram\sdram.c</FilePath>
+            </File>
+            <File>
+              <FileName>atk_ncr.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\ThirdParts\hand_write_lib\atk_ncr.c</FilePath>
+            </File>
+            <File>
+              <FileName>ATKNCR_M_V2.0.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\ThirdParts\hand_write_lib\ATKNCR_M_V2.0.lib</FilePath>
             </File>
           </Files>
         </Group>

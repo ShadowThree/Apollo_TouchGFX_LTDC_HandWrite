@@ -12,6 +12,10 @@ public:
     virtual void setupScreen();
     virtual void tearDownScreen();
 		virtual void clearHandWriteArea();
+		virtual void recognize();
+			
+		void showResult(char* result);
+			
 protected:
 };
 

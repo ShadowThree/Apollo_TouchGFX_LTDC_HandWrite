@@ -138,6 +138,9 @@ __weak void StartDefaultTask(void *argument)
 		HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 	}
 	
+//	extern void LTDC_draw_line_test(void);
+//	LTDC_draw_line_test();
+	
   /* Infinite loop */
   for(;;)
   {

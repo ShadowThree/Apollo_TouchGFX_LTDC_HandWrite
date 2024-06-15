@@ -47,9 +47,15 @@ bool STM32TouchController::sampleTouch(int32_t& x, int32_t& y)
      */
     if(num_touched) {
 			num_touched = 0;
-			x = touch_coordinate[0].x;
-			y = touch_coordinate[0].y;
-			return true;
+			if(touch_coordinate[0].x > LTDC_L1_START_X && touch_coordinate[0].x < LTDC_L1_START_X + LTDC_L1_WIDTH &&
+				 touch_coordinate[0].y > LTDC_L1_START_Y && touch_coordinate[0].y < LTDC_L1_START_Y + LTDC_L1_HEIGHT)
+			{
+				return false;
+			} else {
+				x = touch_coordinate[0].x;
+				y = touch_coordinate[0].y;
+				return true;
+			}
 		}
     return false;
 }

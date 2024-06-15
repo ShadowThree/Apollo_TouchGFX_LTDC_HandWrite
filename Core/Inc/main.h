@@ -57,6 +57,15 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define LTDC_L1_ADDR (LTDC_L0_ADDR + LTDC_FRAME_BUF_SIZE * 2)
+#define LTDC_FRAME_BUF_SIZE (1024 * 600 * 2)
+#define LTDC_L0_ADDR 0xC0000000
+#define LTDC_L0_WIDTH 1024
+#define LTDC_L0_HEIGHT 600
+#define LTDC_L1_WIDTH 300
+#define LTDC_L1_HEIGHT 300
+#define LTDC_L1_START_X 200
+#define LTDC_L1_START_Y 180
 #define CT_RST_Pin GPIO_PIN_8
 #define CT_RST_GPIO_Port GPIOI
 #define LED0_Pin GPIO_PIN_1

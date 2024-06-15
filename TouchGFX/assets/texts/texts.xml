@@ -6,6 +6,9 @@
   <Texts>
     <TextGroup Id="Group1" />
     <TextGroup Id="Unsorted">
+      <Text Id="__SingleUse_A4EZ" Alignment="Center" TypographyId="Default">
+        <Translation Language="GB">Clear</Translation>
+      </Text>
       <Text Id="__SingleUse_98HO" Alignment="Left" TypographyId="Large">
         <Translation Language="GB"></Translation>
       </Text>

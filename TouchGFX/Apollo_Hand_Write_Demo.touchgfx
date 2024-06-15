@@ -75,9 +75,44 @@
               "UseBuffer": true,
               "BufferSize": 10
             }
+          },
+          {
+            "Type": "ButtonWithLabel",
+            "Name": "btnClear",
+            "X": 295,
+            "Y": 500,
+            "Width": 110,
+            "Height": 50,
+            "Pressed": "__generated\\alternate_theme_images_widgets_button_regular_height_50_tiny_round_pressed.png",
+            "Released": "__generated\\alternate_theme_images_widgets_button_regular_height_50_tiny_round_normal.png",
+            "TextId": "__SingleUse_A4EZ",
+            "ReleasedColor": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "PressedColor": {
+              "Red": 255,
+              "Green": 255,
+              "Blue": 255
+            },
+            "TextRotation": "0",
+            "Preset": "alternate_theme\\presets\\button\\regular\\height_50\\tiny_round_normal.json"
           }
         ],
-        "Interactions": []
+        "Interactions": [
+          {
+            "InteractionName": "clearHandWriteArea",
+            "Trigger": {
+              "Type": "TriggerClicked",
+              "TriggerComponent": "btnClear"
+            },
+            "Action": {
+              "Type": "ActionCustom",
+              "FunctionName": "clearHandWriteArea"
+            }
+          }
+        ]
       }
     ],
     "CustomContainerDefinitions": [],

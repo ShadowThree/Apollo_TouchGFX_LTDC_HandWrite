@@ -401,9 +401,12 @@ void LTDC_draw_line_test(void)
 
 static COORDINATE_t last_pos[NUM_TOUCH_SUPPORT] = {0};
 static uint32_t last_tick[NUM_TOUCH_SUPPORT] = {0};
+extern osEventFlagsId_t eventGroupHandle;
+extern osMessageQueueId_t drawCoordinateHandle;
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	uint32_t addr;
+	osStatus_t osSta;
 	
 	gt911_get_touch((COORDINATE_t*)touch_coordinate, (uint8_t*)&num_touched);
 	if(num_touched) {
@@ -436,8 +439,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 						}
 					}
 					#else		// draw line
-					INT_DBG("p(%d, %d) --> p(%d, %d)\n", last_pos[i].x, last_pos[i].y, touch_coordinate[i].x, touch_coordinate[i].y);
-					LTDC_draw_line(last_pos[i].x, last_pos[i].y, touch_coordinate[i].x, touch_coordinate[i].y);
+					INT_DBG("A(%d, %d) --> A(%d, %d)\n", last_pos[i].x, last_pos[i].y, touch_coordinate[i].x, touch_coordinate[i].y);
+					//LTDC_draw_line(last_pos[i].x, last_pos[i].y, touch_coordinate[i].x, touch_coordinate[i].y);
+					atk_ncr_point coordinate[2] = {{.x = last_pos[i].x, .y = last_pos[i].y}, {.x = touch_coordinate[i].x, .y = touch_coordinate[i].y}};
+					osSta = osMessageQueuePut(drawCoordinateHandle, coordinate, NULL, 0);
+					if(osSta != osOK) {
+						LOG_ERR("queue put err[%d]\n", osSta);
+					}
+					uint32_t flag = osEventFlagsSet(eventGroupHandle, EVT_DRAW_LINE);
+					if(0x80000000 & flag) {
+						LOG_ERR("EventFlagSet err[0x%08x]\n", flag);
+					}
 					#endif
 				}
 			}

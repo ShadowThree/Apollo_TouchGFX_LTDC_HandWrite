@@ -41,7 +41,9 @@ extern "C" {
 
 /* Exported constants --------------------------------------------------------*/
 /* USER CODE BEGIN EC */
-
+#define EVT_RECOGNIZE		1
+#define EVT_DRAW_LINE		2
+#define EVT_ALL					(EVT_RECOGNIZE | EVT_DRAW_LINE)
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

@@ -7,7 +7,7 @@
 #include "string.h"
 #include "cmsis_os2.h"
 #include "atk_ncr.h"
-extern osSemaphoreId_t binSemRecognizeHandle;
+extern osEventFlagsId_t eventGroupHandle;
 #endif
 
 Screen1View::Screen1View()
@@ -43,7 +43,7 @@ void Screen1View::recognize()
 	Unicode::strncpy(txtResultBuffer, myStr, TXTRESULT_SIZE);
 	txtResult.invalidate();
 #else
-	osSemaphoreRelease(binSemRecognizeHandle);
+	osEventFlagsSet(eventGroupHandle, EVT_RECOGNIZE);
 #endif
 }
 

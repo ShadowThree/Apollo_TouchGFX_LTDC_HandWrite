@@ -63,10 +63,15 @@ const osThreadAttr_t TouchGFX_attributes = {
   .stack_size = 2048 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for binSemRecognize */
-osSemaphoreId_t binSemRecognizeHandle;
-const osSemaphoreAttr_t binSemRecognize_attributes = {
-  .name = "binSemRecognize"
+/* Definitions for drawCoordinate */
+osMessageQueueId_t drawCoordinateHandle;
+const osMessageQueueAttr_t drawCoordinate_attributes = {
+  .name = "drawCoordinate"
+};
+/* Definitions for eventGroup */
+osEventFlagsId_t eventGroupHandle;
+const osEventFlagsAttr_t eventGroup_attributes = {
+  .name = "eventGroup"
 };
 
 /* Private function prototypes -----------------------------------------------*/
@@ -93,10 +98,6 @@ void MX_FREERTOS_Init(void) {
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
-  /* Create the semaphores(s) */
-  /* creation of binSemRecognize */
-  binSemRecognizeHandle = osSemaphoreNew(1, 0, &binSemRecognize_attributes);
-
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -104,6 +105,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
+
+  /* Create the queue(s) */
+  /* creation of drawCoordinate */
+  drawCoordinateHandle = osMessageQueueNew (16, 8, &drawCoordinate_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
@@ -119,6 +124,10 @@ void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
+
+  /* Create the event(s) */
+  /* creation of eventGroup */
+  eventGroupHandle = osEventFlagsNew(&eventGroup_attributes);
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
@@ -136,7 +145,7 @@ void MX_FREERTOS_Init(void) {
 __weak void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN StartDefaultTask */
-	
+
 	// GT911 init
 	GT911_STA_t gt911_sta = GT911_STA_OK;
 	HAL_NVIC_DisableIRQ(EXTI9_5_IRQn);
@@ -157,18 +166,41 @@ __weak void StartDefaultTask(void *argument)
 	}
 	
   /* Infinite loop */
+	uint32_t evt_id;
+	osStatus_t osSta = osOK;
   for(;;)
   {
-    osSemaphoreAcquire(binSemRecognizeHandle, osWaitForever);
-		//LOG_DBG("recognize...\n");
-//		for(uint16_t i = 0; i < point_num; i+=2) {
-//			LOG_DBG("P(%d,%d) P(%d,%d)\n", draw_coor[i].x, draw_coor[i].y, draw_coor[i+1].x, draw_coor[i+1].y);
-//			osDelay(2);
-//		}
-		alientek_ncr(draw_coor, point_num, CHAR_NUM/2, RECOGNIZE_123, result);
-		alientek_ncr(draw_coor, point_num, CHAR_NUM/2, RECOGNIZE_ABC, &result[3]);
-		recognize_finish = 1;
-		LOG_DBG("point_num[%d] result: %s\n", point_num, result);
+		evt_id = osEventFlagsWait(eventGroupHandle, EVT_ALL, osFlagsWaitAny, osWaitForever);
+		
+		if(evt_id & EVT_RECOGNIZE) {
+//			LOG_DBG("recognize...\n");
+//			for(uint16_t i = 0; i < point_num; i+=2) {
+//				LOG_DBG("P(%d,%d) P(%d,%d)\n", draw_coor[i].x, draw_coor[i].y, draw_coor[i+1].x, draw_coor[i+1].y);
+//				osDelay(2);
+//			}
+			alientek_ncr(draw_coor, point_num, CHAR_NUM/2, RECOGNIZE_123, result);
+			alientek_ncr(draw_coor, point_num, CHAR_NUM/2, RECOGNIZE_ABC, &result[3]);
+			recognize_finish = 1;
+			LOG_DBG("point_num[%d] result: %s\n", point_num, result);
+//			if(point_num == MAX_POINT) {
+//				LOG_WAR("MAX_POINT[%d] is too small\n", MAX_POINT);
+//			}
+		}
+		
+		if(evt_id & EVT_DRAW_LINE) {
+			extern void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2);
+			atk_ncr_point coordinate[2];
+			
+			while(osMessageQueueGetCount(drawCoordinateHandle)) {
+				osSta = osMessageQueueGet(drawCoordinateHandle, coordinate, NULL, 0);
+				if(osOK != osSta) {
+					LOG_ERR("get queue err[%d]\n", osSta);
+					continue;
+				}
+				LTDC_draw_line(coordinate[0].x, coordinate[0].y, coordinate[1].x, coordinate[1].y);
+				//LOG_DBG("B(%d, %d) --> B(%d, %d)\n", coordinate[0].x, coordinate[0].y, coordinate[1].x, coordinate[1].y);
+			}
+		}
   }
   /* USER CODE END StartDefaultTask */
 }

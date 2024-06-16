@@ -44,7 +44,7 @@ typedef struct __attribute__((packed)) _atk_ncr_point		// ARM_compiler_v6
 // output number
 #define CHAR_NUM	6
 // max point to record
-#define MAX_POINT		500
+#define MAX_POINT		1000
 extern atk_ncr_point draw_coor[MAX_POINT];
 extern volatile uint16_t point_num;
 extern char result[CHAR_NUM+1];

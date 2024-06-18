@@ -253,5 +253,141 @@ void HAL_LTDC_MspDeInit(LTDC_HandleTypeDef* ltdcHandle)
 }
 
 /* USER CODE BEGIN 1 */
+#include <stdlib.h>
+#include "atk_ncr.h"
 
+#define LTDC_DBG_EN	0
+#if LTDC_DBG_EN
+#include "dbger.h"
+#define LTDC_DBG(fmt, ...)	LOG_DBG(fmt, ##__VA_ARGS__)
+#else
+#define LTDC_DBG(fmt, ...)
+#endif
+void LTDC_draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t width)
+{
+	#define DELAY_TIME	20
+	//#define DRAW_LINE_DELAY(ms)		osDelay(ms)
+	#define DRAW_LINE_DELAY(ms)
+	uint32_t addr;
+	int16_t val;
+	if(abs(x1-x2) > abs(y1-y2)) {
+		val = (int16_t)(100.0f * abs(y2-y1) / abs(x2-x1));
+		if(x1 < x2) {
+			if(y1 < y2) {		// abs(x1-x2) > abs(y1-y2)		// x1 < x2		// y1 < y2
+				for(int16_t i = x1; i <= x2; i++) {
+					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = i;
+						draw_coor[point_num++].y = y1+val*(i-x1)/100;
+					}
+					for(int8_t j = -width; j <= width; j++) {
+						addr = (LTDC_L1_ADDR + (i - LTDC_L1_START_X) * 2 + (( y1+val*(i-x1)/100+j ) - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
+						LTDC_DBG("\tp(%d,%d) addr:0x%08x\n", i, y1+val*(i-x1)/100+j, addr);
+						*(uint16_t*)addr = 0;
+					}
+				}
+			} else {		// abs(x1-x2) > abs(y1-y2)		// x1 < x2		// y1 >= y2
+				for(int16_t i = x1; i <= x2; i++) {
+					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = i;
+						draw_coor[point_num++].y = y1-val*(i-x1)/100;
+					}
+					for(int8_t j = -width; j <= width; j++) {
+						addr = (LTDC_L1_ADDR + (i - LTDC_L1_START_X) * 2 + (( y1-val*(i-x1)/100+j ) - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
+						LTDC_DBG("\tp(%d,%d) addr:0x%08x\n", i, y1-val*(i-x1)/100+j, addr);
+						*(uint16_t*)addr = 0;
+					}
+				}
+			}
+		} else {
+			if(y1 < y2) {		// abs(x1-x2) > abs(y1-y2)		// x1 >= x2		// y1 < y2
+				for(int16_t i = x1; i >= x2; i--) {
+					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = i;
+						draw_coor[point_num++].y = y1+val*(x1-i)/100;
+					}
+					for(int8_t j = -width; j <= width; j++) {
+						addr = (LTDC_L1_ADDR + (i - LTDC_L1_START_X) * 2 + (( y1+val*(x1-i)/100+j ) - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
+						LTDC_DBG("\tp(%d,%d) addr:0x%08x\n", i, y1+val*(x1-i)/100+j, addr);
+						*(uint16_t*)addr = 0;
+					}
+				}
+			} else {		// abs(x1-x2) > abs(y1-y2)		// x1 >= x2		// y1 >= y2
+				for(int16_t i = x1; i >= x2; i--) {
+					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = i;
+						draw_coor[point_num++].y = y1-val*(x1-i)/100;
+					}
+					for(int8_t j = -width; j <= width; j++) {
+						addr = (LTDC_L1_ADDR + (i - LTDC_L1_START_X) * 2 + (( y1-val*(x1-i)/100+j ) - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
+						LTDC_DBG("\tp(%d,%d) addr:0x%08x\n", i, y1-val*(x1-i)/100+j, addr);
+						*(uint16_t*)addr = 0;
+					}
+				}
+			}
+		}
+	} else {
+		val = (int16_t)(100.0f * abs(x2-x1) / abs(y2-y1));
+		if(x1 < x2) {
+			if(y1 < y2) {		// abs(x1-x2) <= abs(y1-y2)		// x1 < x2		// y1 < y2
+				for(int16_t i = y1; i <= y2; i++) {
+					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = x1+val*(i-y1)/100;
+						draw_coor[point_num++].y = i;
+					}
+					for(int8_t j = -width; j <= width; j++) {
+						addr = (LTDC_L1_ADDR + (( x1+val*(i-y1)/100+j ) - LTDC_L1_START_X) * 2 + (i - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
+						LTDC_DBG("\tp(%d,%d) addr:0x%08x\n", x1+val*(i-y1)/100+j, i, addr);
+						*(uint16_t*)addr = 0;
+					}
+				}
+			} else {		// abs(x1-x2) <= abs(y1-y2)		// x1 < x2		// y1 >= y2
+				for(int16_t i = y1; i >= y2; i--) {
+					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = x1+val*(y1-i)/100;
+						draw_coor[point_num++].y = i;
+					}
+					for(int8_t j = -width; j <= width; j++) {
+						addr = (LTDC_L1_ADDR + (( x1+val*(y1-i)/100+j ) - LTDC_L1_START_X) * 2 + (i - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
+						LTDC_DBG("\tp(%d,%d) addr:0x%08x\n", x1+val*(y1-i)/100+j, i, addr);
+						*(uint16_t*)addr = 0;
+					}
+				}
+			}
+		} else {
+			if(y1 < y2) {		// abs(x1-x2) <= abs(y1-y2)		// x1 >= x2		// y1 < y2
+				for(int16_t i = y1; i <= y2; i++) {
+					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = x1-val*(i-y1)/100;
+						draw_coor[point_num++].y = i;
+					}
+					for(int8_t j = -width; j <= width; j++) {
+						addr = (LTDC_L1_ADDR + (( x1-val*(i-y1)/100+j ) - LTDC_L1_START_X) * 2 + (i - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
+						LTDC_DBG("\tp(%d,%d) addr:0x%08x\n", x1-val*(i-y1)/100+j, i, addr);
+						*(uint16_t*)addr = 0;
+					}
+				}
+			} else {		// abs(x1-x2) <= abs(y1-y2)		// x1 >= x2		// y1 >= y2
+				for(int16_t i = y1; i >= y2; i--) {
+					DRAW_LINE_DELAY(DELAY_TIME);
+					if(point_num < MAX_POINT) {
+						draw_coor[point_num].x = x1-val*(y1-i)/100;
+						draw_coor[point_num++].y = i;
+					}
+					for(int8_t j = -width; j <= width; j++) {
+						addr = (LTDC_L1_ADDR + (( x1-val*(y1-i)/100+j ) - LTDC_L1_START_X) * 2 + (i - LTDC_L1_START_Y) * LTDC_L1_WIDTH * 2);
+						LTDC_DBG("\tp(%d,%d) addr:0x%08x\n", x1-val*(y1-i)/100+j, i, addr);
+						*(uint16_t*)addr = 0;
+					}
+				}
+			}
+		}
+	}
+}
 /* USER CODE END 1 */

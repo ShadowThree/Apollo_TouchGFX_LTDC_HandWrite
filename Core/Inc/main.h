@@ -76,7 +76,6 @@ void Error_Handler(void);
 #define CT_SCL_GPIO_Port GPIOH
 #define CT_INT_Pin GPIO_PIN_7
 #define CT_INT_GPIO_Port GPIOH
-#define CT_INT_EXTI_IRQn EXTI9_5_IRQn
 #define CT_SDA_Pin GPIO_PIN_3
 #define CT_SDA_GPIO_Port GPIOI
 #define LCD_BL_Pin GPIO_PIN_5

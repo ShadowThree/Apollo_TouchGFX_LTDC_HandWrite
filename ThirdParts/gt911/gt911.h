@@ -71,7 +71,7 @@ extern "C" {
 //#define GT911_DELAY(ms)			HAL_Delay(ms)		// delay in ms
 #define GT911_DELAY(ms)			osDelay(ms)
 
-#define NUM_TOUCH_SUPPORT		(1)		// range [1, 5]
+#define NUM_TOUCH_SUPPORT		(1)		// range [1, 5], but must be 1 for hand write recognition
 
 typedef enum {
 	GT911_STA_OK = 0,
@@ -94,8 +94,8 @@ typedef enum {
 } GT911_STA_t;
 
 typedef struct {
-	uint16_t x;
-	uint16_t y;
+	int16_t x;
+	int16_t y;
 } COORDINATE_t;
 
 extern volatile COORDINATE_t touch_coordinate[NUM_TOUCH_SUPPORT];

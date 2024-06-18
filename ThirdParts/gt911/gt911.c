@@ -89,8 +89,8 @@ GT911_STA_t gt911_get_touch(volatile COORDINATE_t* touch_coordinate, volatile ui
 	if((gt911_touch_state & 0x80) != 0) {
 		gt911_touch_state &= 0x0F;
 		if(gt911_touch_state != 0) {
-			*num_of_touch_detect = gt911_touch_state;
-			for(uint8_t i = 0; i < *num_of_touch_detect; i++) {
+			//GT911_DBG("get gt911 sta[0x%02x]\n", gt911_touch_state);
+			for(uint8_t i = 0; i < gt911_touch_state; i++) {
 				txBuf[0] = ((GT911_REG_POINT1_X + (i*8)) & 0xFF00) >> 8;
 				txBuf[1] = (GT911_REG_POINT1_X + (i*8)) & 0xFF;
 				gpio_i2c_sta = GPIO_I2C1_WRITE(GT911_ADDR, txBuf, 2);
@@ -106,7 +106,10 @@ GT911_STA_t gt911_get_touch(volatile COORDINATE_t* touch_coordinate, volatile ui
 				touch_coordinate[i].x = ((uint16_t)(rxBuf[1]) << 8) | rxBuf[0];
 				touch_coordinate[i].y = ((uint16_t)(rxBuf[3]) << 8) | rxBuf[2];
 			}
+			*num_of_touch_detect = gt911_touch_state;
 		}
+	} else {
+		*num_of_touch_detect = 0;
 	}
 	return gt911_set_state(0);
 }

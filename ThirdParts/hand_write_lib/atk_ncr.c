@@ -2,6 +2,14 @@
 #include "stdlib.h"
 #include "string.h"
 
+#define ATK_DBG_EN	1
+#if ATK_DBG_EN
+#include "dbger.h"
+#define ATK_DBG(fmt, ...)		LOG_DBG(fmt, ##__VA_ARGS__)
+#else
+#define ATK_DBG(fmt, ...)
+#endif
+
 volatile uint16_t point_num;
 atk_ncr_point draw_coor[MAX_POINT];
 char result[CHAR_NUM+1];
@@ -39,12 +47,15 @@ void alientek_ncr_memset(char *p,char c,unsigned long len)
 void *alientek_ncr_malloc(unsigned int size) 
 {
 	//return mymalloc(SRAMIN,size);
-	return pvPortMalloc(size);
+	void* ptr = pvPortMalloc(size);
+	ATK_DBG("ATK malloc %d bytes at 0x%08x\n", size, (uint32_t)ptr);
+	return ptr;
 }
 //ÄÚ´æÇå¿Õº¯Êý
 void alientek_ncr_free(void *ptr) 
 {
 	//myfree(SRAMIN,ptr);
+	ATK_DBG("ATK free 0x%08x\n", (uint32_t)ptr);
 	vPortFree(ptr);
 }		  
 		  
